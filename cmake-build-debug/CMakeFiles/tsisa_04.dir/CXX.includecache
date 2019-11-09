@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/nothingholy/CLionProjects/tsisa_04/header.h
+iostream
+-
+string
+-
+vector
+-
+iomanip
+-
+cmath
+-
+algorithm
+-
+
+/home/nothingholy/CLionProjects/tsisa_04/main.cpp
+header.h
+/home/nothingholy/CLionProjects/tsisa_04/header.h
+

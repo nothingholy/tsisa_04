@@ -1,0 +1,1 @@
+/usr/bin/g++-8  -g   CMakeFiles/tsisa_04.dir/main.cpp.o  -o tsisa_04 
