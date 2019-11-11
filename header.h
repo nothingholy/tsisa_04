@@ -100,7 +100,7 @@ void criteria_change(){
 
     for(size_t i=0;i<temp.size();i++){
         for(size_t j=1;j< temp[i].size();j++){
-            temp[i][j]=(temp[i][j]-min[j-1]/(max[j-1]-min[j-1]));
+            temp[i][j]=(temp[i][j]-min[j-1])/(max[j-1]-min[j-1]);
         }
     }
 
@@ -121,6 +121,129 @@ void criteria_change(){
 
     temp.clear();
     best.clear();
+}
+
+void Pareto(){
+    vector<pair<double,double>> temp;
+    for(const auto &i:marks)
+        temp.push_back({i[0],i[1]});
+    cout << "\nChoose Cost and Expenses:\n\n";
+
+    //поиск точки утопии
+    pair<double,double> max=temp[0];
+    for(const auto &i:temp){
+        if(i.first>max.first)
+            max.first=i.first;
+        if(i.second>max.second)
+            max.second=i.second;
+    }
+    cout << "Utopia point: ( " << max.first << " ; " << max.second << " )" << endl;
+
+    vector<double> distance;
+    vector<double>::iterator res;
+    for(auto &i:temp){
+        i.first=max.first-i.first;
+        i.second=max.second-i.second;
+    }
+
+    for(auto &i:temp)
+        distance.push_back(i.first+i.second);
+
+    res=min_element(distance.begin(),distance.end());
+    cout << "Minimum distance = " << distance[std::distance(distance.begin(),res)] << endl;
+    cout << "Best choice is: ";
+    cars(std::distance(distance.begin(),res));
+
+    temp.clear();
+    distance.clear();
+}
+
+void Enum(){
+    vector<vector<double>> temp(marks);
+    vector<double> length;
+    vector<double>::iterator res;
+    length.resize(4);
+    for(auto &i:temp){
+        for(size_t j=0;j<i.size();j++)
+            length[j]+=i[j];
+    }
+    for(auto &i:temp){
+        for(size_t j=0;j<i.size();j++)
+            i[j] /= length[j];
+    }
+
+    cout << "\nNormalized Matrix\n";
+    printMatrix(temp);
+
+
+    vector<double> expertopinion={1,1,1,1,1,1};
+    cout << "\nExpert Asseessment of criteria:";
+    for(const auto &i:expertopinion){
+        cout << setw(3) << i << " ";
+        if(i!=expertopinion[expertopinion.size()-1])
+            cout << " ; ";
+    }
+    cout << endl;
+
+    expertopinion={3,2,1,0};
+    cout << "Criteria weights vector: ";
+    for(const auto &i:expertopinion){
+        cout << setw(3) << i << " ";
+        if(i != expertopinion[expertopinion.size()-1])
+            cout << " ; ";
+    }
+    cout << endl;
+
+    normalize(expertopinion);
+    cout << "\nNormalized Vector of Weights:    \t";
+    for(const auto &i:expertopinion){
+        cout << setw(3) << i << " ";
+        if(i != expertopinion[expertopinion.size()-1])
+            cout << " ; ";
+    }
+    cout << endl;
+
+    vector<double> result={0,0,0,0};
+    for(size_t i=0;i<temp.size();i++){
+        for(size_t j=0;j<temp[i].size();j++)
+            result[i]+=temp[i][j]*expertopinion[j];
+    }
+
+    cout << "\n\nMatrix of values of the combined criterion:";
+    for(const auto &i:result){
+        cout << i << " ";
+        if(i!=result[result.size()-1])
+            cout << " ; ";
+    }
+    cout << endl;
+
+    res=max_element(result.begin(),result.end());
+    cout << "\nHighest Value = " << result[distance(result.begin(),res)];
+    cout << "\nBest choice is: ";
+    cars(std::distance(result.begin(),res));
+
+    temp.clear();
+    length.clear();
+    expertopinion.clear();
+    result.clear();
+}
+
+
+void Hierarchies(){
+    vector<vector<vector<double>>> mat;
+    vector<double> length;
+    vector<vector<double>> norm_length;
+
+    vector<double> result = {0,0,0,0};
+    vector<double>::iterator res;
+
+    mat.resize(5);
+    length.resize(5);
+    norm_length.resize(5);
+    for(auto &i:norm_length)
+        i.resize(4);
+
+    mat[0]={{1,}};
 }
 
 #endif //TSISA_04_HEADER_H

@@ -25,4 +25,10 @@ int main() {
 
     cout << "\n\n\nReplacing criteria with restrictions\n";
     criteria_change();
+
+    cout << "\n\n\nFormation and narrowing of the Parreto set\n";
+    Pareto();
+
+    cout << "\n\n\nWeighting and combining criteria\n";
+    Enum();
 }

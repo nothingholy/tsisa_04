@@ -1,0 +1,65 @@
+/home/nothingholy/CLionProjects/tsisa_04/cmake-build-debug/tsisa_04
+sh: chip: command not found
+Cost: 8
+Expenses for service: 5
+Gas consumption: 4
+Comfort: 2
+Normalized vector { 0.421 0.263 0.211 0.105 }
+
+MATRIX ASSESSMENTS
+	--------------------------------------
+	# | Cost | Expenses | Gas | Comfort |
+	--------------------------------------
+	S |   8   |   4   |   7   |   2   |
+	M |   4   |   8   |   3   |   6   |
+	H |   5   |   2   |   6   |   4   | 
+	T |   1   |   5   |   2   |   8   |
+	--------------------------------------
+
+
+Replacing criteria with restrictions
+
+Normalized Matrix
+	--------------------------------------
+	# | Cost | Expenses | Gas | Comfort |
+	--------------------------------------
+	S |   8   | 0.333   |   1   |   0   |
+	M |   4   |   1   | 0.2   | 0.667   |
+	H |   5   |   0   | 0.8   | 0.333   |
+	T |   1   | 0.5   |   0   |   1   |
+	--------------------------------------
+
+Best choice is: Suzuki
+
+
+Formation and narrowing of the Parreto set
+
+Choose Cost and Expenses:
+
+Utopia point: ( 8 ; 8 )
+Minimum distance = 4
+Best choice is: Suzuki
+
+
+Weighting and combining criteria
+
+Normalized Matrix
+	--------------------------------------
+	# | Cost | Expenses | Gas | Comfort |
+	--------------------------------------
+	S | 0.444   | 0.211   | 0.389   | 0.1   |
+	M | 0.222   | 0.421   | 0.167   | 0.3   |
+	H | 0.278   | 0.105   | 0.333   | 0.2   |
+	T | 0.0556   | 0.263   | 0.111   | 0.4   |
+	--------------------------------------
+Expert Asseessment of criteria:  1   1   1   1   1   1
+Criteria weights vector:   3  ;   2  ;   1  ;   0
+
+Normalized Vector of Weights:    	0.5  ; 0.333  ; 0.167  ;   0
+
+
+Matrix of values of the combined criterion:0.357  ; 0.279  ; 0.23  ; 0.134
+
+Highest Value = 0.357
+Best choice is: Suzuki
+Process finished with exit code 0
