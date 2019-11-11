@@ -1,7 +1,6 @@
 #include "header.h"
 
 int main() {
-    system("chip 65001");
     vector<double> criteria={8,5,4,2};
     for(size_t i=0;i<criteria.size();i++){
         if(i==0)
@@ -31,4 +30,7 @@ int main() {
 
     cout << "\n\n\nWeighting and combining criteria\n";
     Enum();
+
+    cout << "\n\n\nHeirarchies\n";
+    Hierarchies();
 }

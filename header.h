@@ -228,22 +228,171 @@ void Enum(){
     result.clear();
 }
 
+void print_helper(size_t &i) {
+    if (i == 0)
+        std::cout << "|  Suzuki ";
+    if (i == 1)
+        std::cout << "|  Mitsub ";
+    if (i == 2)
+        std::cout << "|  Honda  ";
+    if (i == 3)
+        std::cout << "|  Toyota ";
+
+}
+
+void print_helper2(size_t &i) {
+    if (i == 0)
+        std::cout << "|  Cost  ";
+    if (i == 1)
+        std::cout << "|  Exp   ";
+    if (i == 2)
+        std::cout << "|  Gas   ";
+    if (i == 3)
+        std::cout << "|  Comf  ";
+
+}
 
 void Hierarchies(){
     vector<vector<vector<double>>> mat;
     vector<double> length;
-    vector<vector<double>> norm_length;
+    vector<vector<double>> norm_length,multipl,add;
 
     vector<double> result = {0,0,0,0};
     vector<double>::iterator res;
 
     mat.resize(5);
+    multipl.resize(5);
+    add.resize(5);
+    for(auto &i:multipl){
+        for(size_t j=0;j<4;j++)
+            i.push_back(1);
+    }
+    for(auto &i:add){
+        for(size_t j=0;j<4;j++)
+            i.push_back(0);
+    }
+
     length.resize(5);
     norm_length.resize(5);
     for(auto &i:norm_length)
         i.resize(4);
+    //cost
+    mat[0]={{1,    5,       3, 9, 0, 0},
+            {1./5, 1,    1./3, 5, 0, 0},
+            {1./3, 3,       1, 7, 0, 0},
+            {1./9, 1./5, 1./7, 1, 0, 0}};
+    //expenses
+    mat[1]={{   1, 1./5, 3, 1./3,0,0},
+            {   5,    1, 7,    3,0,0},
+            {1./3, 1./7, 1, 1./5,0,0},
+            {   3, 1./3, 5,    1,0,0}};
+    //gas
+    mat[2]={{   1, 7,    3, 9, 0,0},
+            {1./7, 1, 1./5, 3, 0,0},
+            {1./3, 5,    1, 7, 0,0},
+            {1./9, 3, 1./7, 1, 0,0}};
+    //comfort
+    mat[3]={{ 1, 1./7, 3, 1./9, 0,0},
+            { 7,    1, 3, 1./3, 0,0},
+            { 3, 1./3, 1, 1./5, 0,0},
+            { 9,    3, 5,    1, 0,0}};
+    //priority
+    mat[4]={{1,3,5,9,0,0},
+            {1./3,1,3,5,0,0},
+            {1./5,1./3,1,3,0,0},
+            {1./9,1./5,1./3,1,0,0}};
 
-    mat[0]={{1,}};
+    for (auto &i : mat) {
+        for (auto &j: i)
+            for (size_t k = 0; k < j.size() - 2; k++) {
+                j[4] += j[k];
+            }
+    }
+
+    for (size_t i = 0; i < mat.size(); i++) {
+        for (size_t j = 0; j < mat[i].size(); j++) {
+            length[i] += mat[i][j][4];
+        }
+    }
+
+    for (size_t i = 0; i < mat.size(); i++) {
+        for (size_t j = 0; j < mat[i].size(); j++) {
+            mat[i][j][5] = mat[i][j][4] / length[i];
+        }
+    }
+
+    std::vector<double> geomSum = {0, 0, 0, 0, 0}, lambda = {0, 0, 0, 0, 0}, IS = {0, 0, 0, 0, 0}, OS = {0, 0, 0, 0, 0};
+    double PSS = 0.9;
+
+    for (size_t i = 0; i < mat.size(); i++) {
+        for (size_t j = 0; j < mat[i].size(); j++) {
+            for (size_t k = 0; k < mat[i][j].size() - 2; k++) {
+                multipl[i][j] *= mat[i][j][k];
+                add[i][j] += mat[i][k][j];
+            }
+            geomSum[i] += std::pow(multipl[i][j], 0.25);
+        }
+    }
+
+    for (size_t i = 0; i < multipl.size(); i++) {
+        for (size_t j = 0; j < multipl[i].size(); j++) {
+            multipl[i][j] /= geomSum[i];
+            lambda[i] += add[i][j] * multipl[i][j];
+        }
+    }
+
+    for (size_t i = 0; i < lambda.size(); i++) {
+        IS[i] = (lambda[i] - 4) / (4 - 1);
+        OS[i] = IS[i] / PSS;
+
+    }
+
+    std::cout << "\nNormalized matrix:\n";
+    for (size_t i = 0; i < mat.size(); i++) {
+        std::cout << "-----------------------------------------------------------------------\n";
+        if (i < mat.size() - 1)
+            std::cout << "|/////////|  Suzuki |  Mitsu  |   Honda   |  Toyota  |  Sum  |  Norm.  |\n";
+        else
+            std::cout << "|/////////|   Cost  |   Expen  |  Gas |  Comf  |  Sum  |  Norm.  |\n";
+
+        std::cout << "-----------------------------------------------------------------------\n";
+        for (size_t j = 0; j < mat[i].size(); j++) {
+            if (i < mat.size() - 1)
+                print_helper(j);
+            else
+                print_helper2(j);
+            std::cout << "| ";
+            for (const auto &k: mat[i][j]) {
+                std::cout << std::setw(7) << k << " | ";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << "-----------------------------------------------------------------------";
+        std::cout << "\nLambda = " << lambda[i] << "\nIS = " << IS[i] << "\nOS = " << OS[i] << "\n\n";
+
+    }
+
+    // i = 0 4
+    for (size_t i = 0; i < mat.size(); i++) {
+        // j = 0 5
+        for (size_t j = 0; j < mat[i].size(); j++) {
+            norm_length[i][j] = mat[i][j][5];
+        }
+    }
+
+    for (size_t i = 0; i < norm_length.size() - 1; i++) {
+        for (size_t j = 0; j < norm_length[i].size(); j++) {
+            result[i] += norm_length[i][j] * norm_length[4][j];
+        }
+    }
+    std::cout << "The product of the matrix of alternative criteria by the priority vector:\n";
+    for (auto &i: result)
+        std::cout << " | " << std::setw(6) << i << " | " << std::endl;
+
+    res = std::max_element(result.begin(), result.end());
+    std::cout << "\n\nHighest value = " << result[std::distance(result.begin(), res)];
+    std::cout << "\nThe best alternative: ";
+    cars(std::distance(result.begin(), res));
 }
 
 #endif //TSISA_04_HEADER_H
